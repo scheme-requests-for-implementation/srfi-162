@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>SRFI 162: Comparators sublibrary</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/srfi.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>
+  <div>
+
+<h1>Title</h1>
+
+Comparators sublibrary
+
+<h1>Author</h1>
+
+John Cowan
+
+<h1>Status</h1>
+
+<h1>Abstract</h1>
+
+<p>
+This SRFI provides a few extra procedures and comparators to go
+with SRFI 128, Comparators.  Implementers are urged to add them to
+their SRFI 128 libraries, for which reason they are not packaged
+as a separate library.
+</p>
+
+<h1>Issues</h1>
+
+None at present.
+
+<h1>Rationale</h1>
+
+<p>
+The <code>comparator-distinct?</code> procedure is taken from the Haskell
+<code>Eq</code> typeclass.  The <code>comparator-max</code> and
+<code>comparator-min</code> procedures are taken from the Haskell
+<code>Ord</code> typeclass.  The useful comparators are described,
+but not named, in SRFI 128 itself.
+</p>
+
+<h1>Specification</h1>
+
+<h2>Definitions</h2>
+<h3>Predicates</h3>
+<p>
+<code>(comparator-distinct? </code><em>comparator obj<sub>1</sub> obj<sub>2</sub></em><code>)</code>
+</p>
+<p>
+Returns <code>#t</code> if 
+<em>obj<sub>1</sub></em> and <em> obj<sub>2</sub></em> are not the same
+in the sense of the equality predicate of <em>comparator</em>.
+</p>
+
+<p><code>(comparator-max? </code><em>comparator obj<sub>1</sub> obj<sub>2</sub></em> ...<code>)</code>
+</p>
+<p>
+Returns the largest <em>obj</em> in the sense of the ordering procedure of
+<em>comparator</em>.
+</p>
+
+<p><code>(comparator-min? </code><em>comparator obj<sub>1</sub> obj<sub>2</sub></em> ...<code>)</code>
+</p>
+<p>
+Returns the smallest <em>obj</em>, in the sense of the ordering procedure of
+<em>comparator</em>.
+</p>
+
+<h3 id="Useful comparators">Useful comparators</h3>
+<p>
+These comparators are useful for comparing standard Scheme types, and
+should be more efficient than default comparators.
+</p>
+
+<p>
+<code>boolean-comparator</code>
+</p>
+<p>
+A comparator for booleans, such that <code>#f</code> compares before <code>#t</code>.
+</p>
+
+<p>
+<code>real-comparator</code>
+</p>
+<p>
+A comparator for real numbers.
+</p>
+
+<p>
+<code>string-comparator</code>
+</p>
+<p>
+A comparator for strings using the implementation-specific
+definition of <code>string</code>.
+</p>
+
+<p>
+<code>string-ci-comparator</code>
+</p>
+<p>
+A comparator for strings using the implementation-specific
+definition of <code>string-ci</code>.
+</p>
+
+<p>
+<code>list-comparator</code>
+</p>
+<p>
+A comparator for lists that uses <code>default-comparator</code>
+to compare the elements.
+</p>
+
+<p>
+<code>vector-comparator</code>
+</p>
+<p>
+A comparator for vectors that uses <code>default-comparator</code>
+to compare the elements.
+</p>
+
+
+<h1>Implementation</h1>
+
+
+<p>The sample implementation is (not yet)
+found in the repository of this SRFI.  It contains the following files:</p>
+<ul><li><code>predicates-impl.scm</code> - an implementation of the predicates</li>
+<li><code>useful-comparators.scm</code> - an implementation of the comparators</li>
+<li><code>extra-tests.scm</code> - tests for the SRFI 162 additions</li>
+</ul>
+
+<p>Make sure when merging these into SRFI 128 that they are properly exported
+and that <code>useful-comparators.scm</code> is included after the
+definitions of the SRFI 128 procedures.
+
+<h1>Copyright</h1>
+Copyright (C) John Cowan (2018). All Rights Reserved. 
+<p>
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+</p><p>
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+</p><p>
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+
+    </p><hr>
+    <address>Editor: <a href="mailto:srfi-editors+at+srfi+dot+schemers+dot+org" target="_blank">Arthur A. Gleckler</a></address></div>
