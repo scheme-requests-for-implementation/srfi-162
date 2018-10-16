@@ -40,52 +40,61 @@ None at present.
 
 <h1>Rationale</h1>
 
-<p>
-The <code>comparator-distinct?</code> procedure is taken from the Haskell
-<code>Eq</code> typeclass.  The <code>comparator-max</code> and
-<code>comparator-min</code> procedures are taken from the Haskell
-<code>Ord</code> typeclass.  The useful comparators are described,
-but not named, in SRFI 128 itself.
-</p>
+<p>The original specification for comparators was SRFI 114.  This
+was a large and complex SRFI with many procedures and comparators;
+its sample implementation had many bugs.  I replaced it with <a
+href="http://srfi.schemers.org/srfi-128/srfi-128.html"> SRFI 128</a>,
+which is much simpler and cleaner.  However, I now believe that
+SRFI 114 was cut back too far.  In particular, there are no comparators
+(as opposed to comparator constructors) in SRFI 128.  This SRFI
+provides the comparators of SRFI 114 that seem generally useful, so as to have
+them generally available without needing to define them locally.</p>
+
+<p>The SRFI 114 procedures <code>comparator-max</code> and
+<code>comparator-min</code> have also been restored because they
+are equivalent to the <code>max</code> and <code>min</code> methods
+of the Haskell typeclass <code>Ord</code>.  Comparators are equivalent
+to the three typeclasses <code>Eq</code>, <code>Ord</code>, and
+<code>Hashable</code>, but the first and last typeclass do not
+provide any additional methods not already available in SRFI 128
+except inequality, which is normally not provided by Scheme
+libraries.</p>
 
 <h1>Specification</h1>
 
-<h2>Definitions</h2>
-<h3>Predicates</h3>
-<p>
-<code>(comparator-distinct? </code><em>comparator obj<sub>1</sub> obj<sub>2</sub></em><code>)</code>
+<h2 id="Procedures">Procedures</h2>
+<p><code>(comparator-max </code><em>comparator obj<sub>1</sub> obj<sub>2</sub></em> ...<code>)</code>
 </p>
 <p>
-Returns <code>#t</code> if 
-<em>obj<sub>1</sub></em> and <em> obj<sub>2</sub></em> are not the same
-in the sense of the equality predicate of <em>comparator</em>.
+<p><code>(comparator-min </code><em>comparator obj<sub>1</sub> obj<sub>2</sub></em> ...<code>)</code>
+</p>
+<p>
+These procedures are analogous to <code>min</code> and <code>max</code> respectively,
+but may be applied to any orderable objects, not just to real numbers. They
+apply the ordering procedure of <i>comparator</i> to the <i>objects</i> to find
+and return a minimal (or maximal) object. The order in which the
+values are compared is unspecified.
+If two objects are equal in the sense of the comparator, either may be returned.
 </p>
 
-<p><code>(comparator-max? </code><em>comparator obj<sub>1</sub> obj<sub>2</sub></em> ...<code>)</code>
-</p>
-<p>
-Returns the largest <em>obj</em> in the sense of the ordering procedure of
-<em>comparator</em>.
-</p>
-
-<p><code>(comparator-min? </code><em>comparator obj<sub>1</sub> obj<sub>2</sub></em> ...<code>)</code>
-</p>
-<p>
-Returns the smallest <em>obj</em>, in the sense of the ordering procedure of
-<em>comparator</em>.
-</p>
-
-<h3 id="Useful comparators">Useful comparators</h3>
+<h2 id="Useful comparators">Useful comparators</h2>
 <p>
 These comparators are useful for comparing standard Scheme types, and
 should be more efficient than default comparators.
 </p>
 
 <p>
+<code>default-comparator</code>
+</p>
+<p>
+A pre-created default comparator.
+</p>
+
+<p>
 <code>boolean-comparator</code>
 </p>
 <p>
-A comparator for booleans, such that <code>#f</code> compares before <code>#t</code>.
+A comparator for booleans such that <code>#f</code> compares before <code>#t</code>.
 </p>
 
 <p>
@@ -96,11 +105,25 @@ A comparator for real numbers.
 </p>
 
 <p>
+<code>char-comparator</code>
+</p>
+<p>
+A comparator for characters using Unicode codepoint order.</p>
+</p>
+
+<p>
+<code>char-ci-comparator</code>
+</p>
+<p>
+A comparator for characters using Unicode codepoint order.</p>
+</p>
+
+<p>
 <code>string-comparator</code>
 </p>
 <p>
 A comparator for strings using the implementation-specific
-definition of <code>string</code>.
+definition of <code>string&lt;?</code>.
 </p>
 
 <p>
@@ -108,39 +131,41 @@ definition of <code>string</code>.
 </p>
 <p>
 A comparator for strings using the implementation-specific
-definition of <code>string-ci</code>.
+definition of <code>string-ci&lt;?</code>.
 </p>
 
 <p>
-<code>list-comparator</code>
+<code>pair-comparator</code>
 </p>
 <p>
-A comparator for lists that uses <code>default-comparator</code>
-to compare the elements.
+Compares pairs as if by the application of <code>make-pair-comparator</code>
+to pairs with <code>default-comparator</code> as the car and cdr comparators.
+<p>
+<code>list-comparator</code>
+</p>
+
+<p>
+Compares lists as if by the application of <code>make-list-comparator</code> to lists
+with <code>default-comparator</code> as the element comparator.
 </p>
 
 <p>
 <code>vector-comparator</code>
 </p>
 <p>
-A comparator for vectors that uses <code>default-comparator</code>
-to compare the elements.
+Compares vectors as if by the application of <code>make-vector-comparator</code> to vectors
+with <code>default-comparator</code> as the element comparator.
 </p>
 
 
 <h1>Implementation</h1>
 
-
-<p>The sample implementation is (not yet)
-found in the repository of this SRFI.  It contains the following files:</p>
-<ul><li><code>predicates-impl.scm</code> - an implementation of the predicates</li>
-<li><code>useful-comparators.scm</code> - an implementation of the comparators</li>
-<li><code>extra-tests.scm</code> - tests for the SRFI 162 additions</li>
-</ul>
-
-<p>Make sure when merging these into SRFI 128 that they are properly exported
-and that <code>useful-comparators.scm</code> is included after the
-definitions of the SRFI 128 procedures.
+<p>The sample implementation is found in a single file in the repository of this
+SRFI named <code>srfi-162-impl.scm</code>.  It should simply be included in
+whichever SRFI 128 library is in use by the implementation.  It is important
+to include it <i>after</i> all other files.  It is also necessary to
+extend the library exports to include the two new procedures and
+ten new comparators.</p>
 
 <h1>Copyright</h1>
 Copyright (C) John Cowan (2018). All Rights Reserved. 
