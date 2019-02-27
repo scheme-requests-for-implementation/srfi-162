@@ -116,7 +116,7 @@ A comparator for characters using Unicode codepoint order.</p>
 <code>char-ci-comparator</code>
 </p>
 <p>
-A comparator for characters using Unicode codepoint order.</p>
+A comparator for characters using <code>char-ci&lt;?</code>.
 </p>
 
 <p>
@@ -167,6 +167,10 @@ whichever SRFI 128 library is in use by the implementation.  It is important
 to include it <i>after</i> all other files.  It is also necessary to
 extend the library exports to include the two new procedures and
 ten new comparators.</p>
+
+<p>In addition, a copy of the SRFI 128 sample implementation is also provided,
+with the implementation file provided and the various library files appropriately
+extended.</p>
 
 <h1>Copyright</h1>
 Copyright (C) John Cowan (2018). All Rights Reserved. 
