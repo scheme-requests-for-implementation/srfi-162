@@ -17,4 +17,4 @@
   (export comparator-if<=>)
   (include "comparators-impl.scm")
   (include "default.scm")
-)
+  (include "comparators-162.scm"))
