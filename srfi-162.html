@@ -1,11 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <meta charset="utf-8" />
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
     <title>SRFI 162: Comparators sublibrary</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="/srfi.css" type="text/css" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="file:///C:/srfi.css" type="text/css">
+    </head><body>
   <div>
 
 <h1>Title</h1>
@@ -44,8 +43,7 @@ None at present.
 
 <p>The original specification for comparators was SRFI 114.  This
 was a large and complex SRFI with many procedures and comparators;
-its sample implementation had many bugs.  I replaced it with <a
-href="http://srfi.schemers.org/srfi-128/srfi-128.html"> SRFI 128</a>,
+its sample implementation had many bugs.  I replaced it with <a href="http://srfi.schemers.org/srfi-128/srfi-128.html"> SRFI 128</a>,
 which is much simpler and cleaner.  However, I now believe that
 SRFI 114 was cut back too far.  In particular, there are no comparators
 (as opposed to comparator constructors) in SRFI 128.  This SRFI
@@ -60,7 +58,8 @@ to the three typeclasses <code>Eq</code>, <code>Ord</code>, and
 <code>Hashable</code>, but the first and last typeclass do not
 provide any additional methods not already available in SRFI 128
 except inequality, which is normally not provided by Scheme
-libraries.</p>
+libraries.  Equivalent procedures that accept a list have also been added.
+</p>
 
 <h1>Specification</h1>
 
@@ -68,7 +67,12 @@ libraries.</p>
 <p><code>(comparator-max </code><em>comparator obj<sub>1</sub> obj<sub>2</sub></em> ...<code>)</code>
 </p>
 <p>
-<p><code>(comparator-min </code><em>comparator obj<sub>1</sub> obj<sub>2</sub></em> ...<code>)</code>
+</p><p><code>(comparator-min </code><em>comparator obj<sub>1</sub> obj<sub>2</sub></em> ...<code>)</code>
+</p>
+<p><code>(comparator-max-in-list </code><em>comparator list</em><code>)</code>
+</p>
+<p>
+</p><p><code>(comparator-min-in-list </code><em>comparator list</em><code>)</code>
 </p>
 <p>
 These procedures are analogous to <code>min</code> and <code>max</code> respectively,
@@ -78,6 +82,8 @@ and return a minimal (or maximal) object. The order in which the
 values are compared is unspecified.
 If two objects are equal in the sense of the comparator, either may be returned.
 </p>
+
+<p>The <code>-in-list</code> versions accept a single list argument.</p>
 
 <h2 id="Useful comparators">Useful comparators</h2>
 <p>
@@ -90,6 +96,14 @@ should be more efficient than default comparators.
 </p>
 <p>
 A pre-created default comparator.
+It should behave exactly like a comparator returned by SRFI 128
+<code>make-default-comparator</code>.
+</p>
+
+<p>
+The following pre-created comparators must provide both ordering predicates and
+hash functions.  They behave exactly like comparators returned from the
+example calls on <code>make-comparator</code> shown in SRFI 128.
 </p>
 
 <p>
@@ -103,7 +117,7 @@ A comparator for booleans such that <code>#f</code> compares before <code>#t</co
 <code>real-comparator</code>
 </p>
 <p>
-A comparator for real numbers.
+A comparator for real numbers such that smaller numbers compare before larger numbers.
 </p>
 
 <p>
@@ -111,7 +125,7 @@ A comparator for real numbers.
 </p>
 <p>
 A comparator for characters using Unicode codepoint order.</p>
-</p>
+<p></p>
 
 <p>
 <code>char-ci-comparator</code>
@@ -142,7 +156,7 @@ definition of <code>string-ci&lt;?</code>.
 <p>
 Compares pairs as if by the application of <code>make-pair-comparator</code>
 to pairs with <code>default-comparator</code> as the car and cdr comparators.
-<p>
+</p><p>
 <code>list-comparator</code>
 </p>
 
@@ -159,6 +173,17 @@ Compares vectors as if by the application of <code>make-vector-comparator</code>
 with <code>default-comparator</code> as the element comparator.
 </p>
 
+<p>The following comparators behave exactly like the comparators
+returned by calls to <code>make-eq-comparator</code>,
+<code>make-eqv-comparator</code>,
+and <code>make-equal-comparator</code> respectively.
+</p>
+
+<p><code>(eq-comparator)</code></p>
+
+<p><code>(eqv-comparator)</code></p>
+
+<p><code>(equal-comparator)</code></p>
 
 <h1>Implementation</h1>
 
@@ -169,9 +194,9 @@ to include it <i>after</i> all other files.  It is also necessary to
 extend the library exports to include the two new procedures and
 ten new comparators.</p>
 
-<p>In addition, a copy of the SRFI 128 sample implementation is also provided,
-with the implementation file provided and the various library files appropriately
-extended.</p>
+<p>In addition, a copy of the Chibi version of the SRFI 128 sample
+implementation is also provided, with the implementation file provided
+and the various library files appropriately extended.</p>
 
 <h1>Copyright</h1>
 Copyright (C) John Cowan (2018). All Rights Reserved. 
@@ -196,3 +221,4 @@ DEALINGS IN THE SOFTWARE.
 
     </p><hr>
     <address>Editor: <a href="mailto:srfi-editors+at+srfi+dot+schemers+dot+org" target="_blank">Arthur A. Gleckler</a></address></div>
+</body></html>
