@@ -1,9 +1,3 @@
-(use test)
-(use srfi-128)
-(load "../comparators/r7rs-shim.scm")
-
-(define (print x) (display x) (newline))
-
 (test-group "comparators"
 
   (define (vector-cdr vec)

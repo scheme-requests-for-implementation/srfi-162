@@ -1,7 +1,8 @@
-(define-library (comparators)
+(define-library (srfi 128)
   (import (scheme base))
   (import (scheme case-lambda))
   (import (scheme char) (scheme complex) (scheme inexact))
+
   (export comparator? comparator-ordered? comparator-hashable?)
   (export make-comparator
           make-pair-comparator make-list-comparator make-vector-comparator
@@ -15,6 +16,8 @@
   (export hash-bound hash-salt)
   (export =? <? >? <=? >=?)
   (export comparator-if<=>)
-  (include "comparators-impl.scm")
-  (include "default.scm")
-  (include "comparators-162.scm"))
+
+  (include "128/128-impl.scm")
+  (include "128/default.scm")
+  (include "128/162-impl.scm")
+)
