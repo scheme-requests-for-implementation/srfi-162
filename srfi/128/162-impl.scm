@@ -1,20 +1,26 @@
-(define (comparator-max comp . args)
+(define (comparator-max-in-list comp list)
   (let ((< (comparator-ordering-predicate comp)))
-    (let loop ((max (car args)) (args (cdr args)))
-      (if (null? args)
+    (let loop ((max (car list)) (list (cdr list)))
+      (if (null? list)
         max
-        (if (< max (car args))
-          (loop (car args) (cdr args))
-          (loop max (cdr args)))))))
+        (if (< max (car list))
+          (loop (car list) (cdr list))
+          (loop max (cdr list)))))))
+
+(define (comparator-min-in-list comp list)
+  (let ((< (comparator-ordering-predicate comp)))
+    (let loop ((min (car list)) (list (cdr list)))
+      (if (null? list)
+        min
+        (if (< min (car list))
+          (loop min (cdr list))
+          (loop (car list) (cdr list)))))))
+
+(define (comparator-max comp . args)
+  (comparator-max-in-list comp args))
 
 (define (comparator-min comp . args)
-  (let ((< (comparator-ordering-predicate comp)))
-    (let loop ((min (car args)) (args (cdr args)))
-      (if (null? args)
-        min
-        (if (< min (car args))
-          (loop min (cdr args))
-          (loop (car args) (cdr args)))))))
+  (comparator-min-in-list comp args))
 
 (define default-comparator
   (make-default-comparator))
@@ -80,3 +86,7 @@
     vector?
     vector-length
     vector-ref))
+
+(define eq-comparator (make-eq-comparator))
+(define eqv-comparator (make-eqv-comparator))
+(define equal-comparator (make-equal-comparator))
