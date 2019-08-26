@@ -30,7 +30,8 @@
   (export default-comparator boolean-comparator real-comparator
           char-comparator char-ci-comparator
           string-comparator string-ci-comparator
-          list-comparator vector-comparator)
+          list-comparator vector-comparator
+          eq-comparator eqv-comparator equal-comparator)
 
   ;; Chicken type definitions
   (define-type +comparator+ (struct comparator))
