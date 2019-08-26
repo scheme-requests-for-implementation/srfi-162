@@ -6,7 +6,7 @@
 (module (srfi 128) ()
   (import scheme)
   (import (only (chicken base) case-lambda error define-record-type
-           make-parameter parameterize include))
+           make-parameter parameterize include infinite? nan? exact-integer?))
   (import (only (chicken module) export))
   (import (only (chicken type) : define-type))
   (import (only (srfi 4) make-u8vector u8vector? u8vector-length u8vector-ref))
@@ -25,7 +25,8 @@
   (export comparator-if<=>)
   (export comparator-type-test-predicate comparator-equality-predicate
     comparator-ordering-predicate comparator-hash-function)
-  (export comparator-max comparator-min)
+  (export comparator-max comparator-min
+          comparator-max-in-list comparator-min-in-list)
   (export default-comparator boolean-comparator real-comparator
           char-comparator char-ci-comparator
           string-comparator string-ci-comparator

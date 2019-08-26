@@ -16,8 +16,14 @@
   (export hash-bound hash-salt)
   (export =? <? >? <=? >=?)
   (export comparator-if<=>)
+  (export comparator-max comparator-min
+          comparator-max-in-list comparator-min-in-list)
+  (export default-comparator boolean-comparator real-comparator
+          char-comparator char-ci-comparator
+          string-comparator string-ci-comparator
+          list-comparator vector-comparator)
 
   (include "128/128-impl.scm")
   (include "128/default.scm")
-  (include "128/162-impl.scm")
+  (include "128/162-impl.scm") ; must be last
 )

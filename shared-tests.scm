@@ -1,35 +1,25 @@
-(test-group "comparators"
+(define (vector-cdr vec)
+  (let* ((len (vector-length vec))
+         (result (make-vector (- len 1))))
+    (let loop ((n 1))
+      (cond
+        ((= n len) result)
+        (else (vector-set! result (- n 1) (vector-ref vec n))
+              (loop (+ n 1)))))))
 
-  (define (vector-cdr vec)
-    (let* ((len (vector-length vec))
-           (result (make-vector (- len 1))))
-      (let loop ((n 1))
-        (cond
-          ((= n len) result)
-          (else (vector-set! result (- n 1) (vector-ref vec n))
-                (loop (+ n 1)))))))
-
+(test-group "vector/cdr"
   (test '#(2 3 4) (vector-cdr '#(1 2 3 4)))
   (test '#() (vector-cdr '#(1)))
+) ; end vector-cdr
 
-  (print "default-comparator")
-  (define default-comparator (make-default-comparator))
-  (print "real-comparator")
-  (define real-comparator (make-comparator real? = < number-hash))
-  (print "degenerate comparator")
+(test-group "comparators"
+
   (define degenerate-comparator (make-comparator (lambda (x) #t) equal? #f #f))
-  (print "boolean comparator")
-  (define boolean-comparator
-    (make-comparator boolean? eq? (lambda (x y) (and (not x) y)) boolean-hash))
-  (print "bool-pair-comparator")
   (define bool-pair-comparator (make-pair-comparator boolean-comparator boolean-comparator))
-  (print "num-list-comparator")
   (define num-list-comparator
     (make-list-comparator real-comparator list? null? car cdr))
-  (print "num-vector-comparator")
   (define num-vector-comparator
     (make-vector-comparator real-comparator vector? vector-length vector-ref))
-  (print "vector-qua-list comparator")
   (define vector-qua-list-comparator
     (make-list-comparator
       real-comparator
@@ -37,16 +27,8 @@
       (lambda (vec) (= 0 (vector-length vec)))
       (lambda (vec) (vector-ref vec 0))
       vector-cdr))
-  (print "list-qua-vector-comparator")
   (define list-qua-vector-comparator
      (make-vector-comparator default-comparator list? length list-ref))
-  (print "eq-comparator")
-  (define eq-comparator (make-eq-comparator))
-  (print "eqv-comparator")
-  (define eqv-comparator (make-eqv-comparator))
-  (print "equal-comparator")
-  (define equal-comparator (make-equal-comparator))
-  (print "symbol-comparator")
   (define symbol-comparator
     (make-comparator
       symbol?
@@ -64,6 +46,9 @@
   ) ; end comparators/predicates
 
   (test-group "comparators/constructors"
+    (define bool-pair (cons #t #f))
+    (define bool-pair-2 (cons #t #f))
+    (define reverse-bool-pair (cons #f #t))
     (test-assert (=? boolean-comparator #t #t))
     (test-assert (not (=? boolean-comparator #t #f)))
     (test-assert (<? boolean-comparator #f #t))
@@ -107,9 +92,6 @@
     (test-assert (not (<? vector-qua-list-comparator '#(3 4) '#(1 2 3))))
     (test-assert (<? list-qua-vector-comparator '(3 4) '(1 2 3)))
 
-    (define bool-pair (cons #t #f))
-    (define bool-pair-2 (cons #t #f))
-    (define reverse-bool-pair (cons #f #t))
     (test-assert (=? eq-comparator #t #t))
     (test-assert (not (=? eq-comparator #f #t)))
     (test-assert (=? eqv-comparator bool-pair bool-pair))
@@ -196,29 +178,6 @@
 
   ) ; end comparators/default
 
-  ;; SRFI 128 does not actually require a comparator's four procedures
-  ;; to be eq? to the procedures originally passed to make-comparator.
-  ;; For interoperability/interchangeability between the comparators
-  ;; of SRFI 114 and SRFI 128, some of the procedures passed to
-  ;; make-comparator may need to be wrapped inside another lambda
-  ;; expression before they're returned by the corresponding accessor.
-  ;;
-  ;; So this next group of tests is incorrect, hence commented out
-  ;; and replaced by a slightly less naive group of tests.
-
-#;
-  (test-group "comparators/accessors"
-    (define ttp (lambda (x) #t))
-    (define eqp (lambda (x y) #t))
-    (define orp (lambda (x y) #t))
-    (define hf (lambda (x) 0))
-    (define comp (make-comparator ttp eqp orp hf))
-    (test ttp (comparator-type-test-predicate comp))
-    (test eqp (comparator-equality-predicate comp))
-    (test orp (comparator-ordering-predicate comp))
-    (test hf (comparator-hash-function comp))
-  ) ; end comparators/accessors
-
   (test-group "comparators/accessors"
     (define x1 0)
     (define x2 0)
@@ -272,6 +231,24 @@
     (test-assert (exact-integer? (hash-salt)))
     (test-assert (< (hash-salt) (hash-bound)))
   ) ; end comparators/bound-salt
+
+  (test-group "comparators/min-max"
+    (test-assert 5 (comparator-max real-comparator 1 5 3 2 -2))
+    (test-assert -2 (comparator-min real-comparator 1 5 3 2 -2))
+    (test-assert 5 (comparator-max-in-list real-comparator '(1 5 3 2 -2)))
+    (test-assert -2 (comparator-min-in-list real-comparator '(1 5 3 2 -2)))
+  ) ; end comparators/min-max
+
+  (test-group "comparators/variables"
+    ;; Most of the variables have been tested above.
+    (test-assert (=? char-comparator #\C #\C))
+    (test-assert (=? char-ci-comparator #\c #\C))
+    (test-assert (=? string-comparator "ABC" "ABC"))
+    (test-assert (=? string-ci-comparator "abc" "ABC"))
+    (test-assert (=? eq-comparator 32 32))
+    (test-assert (=? eqv-comparator 32 32))
+    (test-assert (=? equal-comparator "ABC" "ABC"))
+  ) ; end comparators/variables
 
 ) ; end comparators
 
