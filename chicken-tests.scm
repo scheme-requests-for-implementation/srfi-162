@@ -1,13 +1,10 @@
-(use test)
-(use srfi-128)
-(load "../comparators/r7rs-shim.scm")
+(import (test))
+(import (srfi 128))
+(import (only (srfi 4) make-u8vector u8vector? u8vector-length u8vector-ref))
+(import (only (srfi 13) string-downcase))
+(include "srfi/128/r7rs-shim.scm")
+(include "shared-tests.scm")
 
-(define (print x) (display x) (newline))
-
-(test-group "comparators"
-
-  (define (vector-cdr vec)
-    (let* ((len (vector-length vec))
            (result (make-vector (- len 1))))
       (let loop ((n 1))
         (cond
