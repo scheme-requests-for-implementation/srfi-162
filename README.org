@@ -4,9 +4,9 @@
 
 This repository hosts [[https://srfi.schemers.org/srfi-162/][SRFI 162]]: Comparators sublibrary, a [[https://srfi.schemers.org/][Scheme Request for Implementation]].
 
-This SRFI is in /draft/ status.
+This SRFI is in /final/ status.
 
-See also [[https://srfi.schemers.org/srfi-128/][SRFI 128: Comparators (reduced)]].
+See also [[https://srfi.schemers.org/srfi-114/][SRFI 114: Comparators]] and [[https://srfi.schemers.org/srfi-128/][SRFI 128: Comparators (reduced)]].
 
 The full documentation for this SRFI can be found in the [[https://srfi.schemers.org/srfi-162/srfi-162.html][SRFI Document]].
 
