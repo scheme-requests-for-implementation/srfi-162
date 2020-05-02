@@ -176,11 +176,11 @@ returned by calls to <code>make-eq-comparator</code>,
 and <code>make-equal-comparator</code> respectively.
 </p>
 
-<p><code>(eq-comparator)</code></p>
+<p><code>eq-comparator</code></p>
 
-<p><code>(eqv-comparator)</code></p>
+<p><code>eqv-comparator</code></p>
 
-<p><code>(equal-comparator)</code></p>
+<p><code>equal-comparator</code></p>
 
 <h1>Implementation</h1>
 
@@ -188,8 +188,8 @@ and <code>make-equal-comparator</code> respectively.
 SRFI named <code>srfi/128/162-impl.scm</code>.  It should simply be included in
 whichever SRFI 128 library is in use by the implementation.  It is important
 to include it <i>after</i> all other files.  It is also of course necessary to
-extend the library exports to include the two new procedures and
-ten new comparators.</p>
+extend the library exports to include the four new procedures and
+thirteen new comparators.</p>
 
 <p>Alternatively, there is a full implementation of the <code>(srfi 128)</code>
 library including all extensions from this SRFI.  The supported
